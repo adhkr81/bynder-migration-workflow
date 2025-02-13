@@ -10,7 +10,7 @@ function createDictionary() {
     const newNamesData = JSON.parse(fs.readFileSync(tempFilePath, "utf-8"));
     const downloadData = JSON.parse(fs.readFileSync("download.json", "utf-8"));
     const assetsFromCollection = downloadData.assets;
-
+    console.log(assetsFromCollection.length)
 
     const dictionary = assetsFromCollection.reduce((acc, item) => {
 

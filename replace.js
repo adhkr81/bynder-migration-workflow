@@ -10,44 +10,56 @@ async function loadDictionary() {
   return JSON.parse(dictionaryContent);
 }
 
+const updatedSet = new Set()
+const notUpdatedSet = new Set()
 
-// Replace this with your final object
-const bynderURLs = {
-  "/us/washcombo-all-in-one/images/power-of-one-bg-tablet.jpg": "https://media.us.lg.com/transform/ed83f1cf-389d-497e-9979-5b190e4500af/washcombo-all-in-one_power-of-one-bg-tablet",
-  "/us/washcombo-all-in-one/images/power-of-one-bg-mobile.jpg": "https://media.us.lg.com/transform/cd4ce791-01f5-4b18-8434-d6a10de8f2e8/washcombo-all-in-one_power-of-one-bg-mobile"
-};
 
 // Function to replace image src in React component
-function replaceImageSrcInFile(filePath) {
-  // Read the component file
+function replaceImageSrcInFile(filePath, dictionary) {
   const fileContent = fs.readFileSync(filePath, "utf-8");
-
-  // Replace all occurrences of relative src with Bynder URLs
   let updatedContent = fileContent;
+  let isUpdated = false;
 
-  Object.keys(bynderURLs).forEach((relativePath) => {
-    const bynderURL = bynderURLs[relativePath];
-    // Match and replace src attributes with corresponding Bynder URLs
-    const regex = new RegExp(`(["'])([^"']*${relativePath}[^"']*)`, "g");
-  
+
+  const updatedPaths = []; // Tracks successfully replaced paths
+  const allPaths = Object.keys(dictionary); // Track all possible paths
+
+  // Process each path to perform replacements
+  allPaths.forEach((relativePath) => {
+    const bynderURL = dictionary[relativePath];
+
+    const escapeRegex = (str) => str.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+    const escapedPath = escapeRegex(relativePath);
+    const regex = new RegExp(`(["'])([^"']*${escapedPath}[^"']*)`, "g");
+
     if (regex.test(updatedContent)) {
-      // Get the relative path of the file to remove the absolute part
-      const relativeFilePath = path.relative(__dirname, filePath);
-  
-      console.log(`Match found and replaced in file: ${relativeFilePath} for path: ${relativePath} to path: ${bynderURL}`);
       updatedContent = updatedContent.replace(regex, `$1${bynderURL}`);
+      updatedPaths.push(relativePath); // Store updated paths
+      isUpdated = true;
+
+      // Add to updated set without quotes around URL
+      updatedSet.add(`${relativePath} : ${bynderURL}`);
     }
   });
 
-  // Write back the updated content to the file if there was a match
-  if (updatedContent !== fileContent) {
+  // Ensure paths that were not updated are correctly tracked
+  const notUpdatedPaths = allPaths.filter((path) => !updatedPaths.includes(path));
+
+  notUpdatedPaths.forEach((path) => {
+    const bynderURL = dictionary[path];
+    notUpdatedSet.add(`${path} : ${bynderURL}`); // Add paths that were not updated
+  });
+
+  // Write back updated content if changes were made
+  if (isUpdated) {
     fs.writeFileSync(filePath, updatedContent, "utf-8");
     console.log(`Updated: ${filePath}`);
   }
 }
 
+
 // Function to traverse all React component files
-function traverseAndUpdateComponents(dirPath) {
+function traverseAndUpdateComponents(dirPath, dictionary) {
   const files = fs.readdirSync(dirPath);
 
   files.forEach((file) => {
@@ -56,14 +68,39 @@ function traverseAndUpdateComponents(dirPath) {
 
     if (fileStats.isDirectory()) {
       // If it's a directory, traverse recursively
-      traverseAndUpdateComponents(filePath);
+      traverseAndUpdateComponents(filePath, dictionary);
     } else if (filePath.endsWith(".js") || filePath.endsWith(".jsx") || filePath.endsWith(".tsx")) {
       // Only process JavaScript/JSX/TSX files (React components)
-      replaceImageSrcInFile(filePath);
+      replaceImageSrcInFile(filePath, dictionary);
     }
   });
 }
 
-// Run the script on your React components directory
-const componentsDir = path.join(__dirname, "components"); // Replace with the path to your components folder
-traverseAndUpdateComponents(componentsDir);
+
+async function main() {
+  const bynderURLs = await loadDictionary()
+
+  if (!bynderURLs || Object.keys(bynderURLs).length === 0) {
+    console.log("Dictionary is empty")
+    return
+  }
+
+  const componentsDir = path.join(__dirname, "components"); // Replace with the path to your components folder
+  traverseAndUpdateComponents(componentsDir, bynderURLs);
+
+  console.log("Updated paths: ", [...updatedSet]);
+  console.log("Not updated paths: ", [...notUpdatedSet]);
+
+  const logFilePath = path.join(__dirname, "_output/logs", "update_log.json");
+  const filteredNotUpdated = [...notUpdatedSet].filter(path => !updatedSet.has(path));
+
+  const logData = {
+    notUpdated: filteredNotUpdated,
+    updated: [...updatedSet],
+  };
+  
+  // Write the log data to a file
+  fs.writeFileSync(logFilePath, JSON.stringify(logData, null, 2), "utf-8");
+}
+
+main()

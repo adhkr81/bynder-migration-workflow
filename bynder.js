@@ -117,7 +117,7 @@ function createData(files) {
   );
 
   const description = "2024 Washcombo All in One Homepage Assets";
-  const tags = "Homepage, HP";
+  const tags = "Homepage, HP, All-in-One, Energy";
   const businessUnit = "CXM";
   const assetSubType = "Lifestyle, Product";
   const assetProductType = "Landing Page";
