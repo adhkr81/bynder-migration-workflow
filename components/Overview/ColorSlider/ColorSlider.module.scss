@@ -1,0 +1,111 @@
+@import "../../styles/LG/variables.scss";
+
+.color-carousel {
+  grid-area: color-carousel;
+  display: flex;
+  align-items: center;
+
+  &-slide {
+    position: relative;
+
+    img {
+      transition: all 500ms ease;
+      opacity: 0;
+
+      &[data-active="true"] {
+        opacity: 1;
+      }
+
+      &:not(:first-child) {
+        position: absolute;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+      }
+    }
+  }
+
+  &-btns {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+
+    button {
+      border-radius: 99px;
+      outline: none;
+      border: 1px solid #fff;
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+      position: relative;
+
+      &[data-active="true"] {
+        width: 22px;
+        height: 22px;
+      }
+
+      span.name {
+        visibility: hidden;
+      }
+
+      .color-label {
+        opacity: 0;
+        position: absolute;
+        bottom: -7px;
+        z-index: 2;
+        right: -110px;
+        width: 100px;
+        height: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        pointer-events: none;
+        transform: translateY(10px);
+        transition: all 500ms ease;
+        border: 1px solid #3c3a3b;
+
+        &[data-show="true"] {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        &[data-color="Graphite Steel"] {
+          background-color: #fff;
+
+          span {
+            color: #000;
+          }
+        }
+
+        &[data-color="Black Steel"] {
+          background-color: #3c3a3b;
+
+          span {
+            color: #fff;
+          }
+        }
+
+        span {
+          font-size: 14px;
+          margin-top: 5px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: #{$max-sm}px) {
+  .color-carousel {
+    justify-content: center;
+    flex-direction: column-reverse;
+
+    &-btns {
+      flex-direction: row;
+    }
+  }
+}

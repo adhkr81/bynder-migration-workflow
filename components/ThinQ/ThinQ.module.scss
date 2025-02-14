@@ -1,0 +1,157 @@
+@import "../../styles/LG/variables.scss";
+
+.container {
+  width: 100%;
+  margin: 170px auto;
+  display: flex;
+  justify-content: center;
+
+  &--inner {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    max-width: 1420px;
+    width: 100%;
+    gap: 60px;
+    justify-content: space-between;
+    padding: 0 32px;
+  }
+
+  .disclaimer-mobile {
+    display: none;
+  }
+}
+
+.img {
+  max-width: 778px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 64px;
+
+  img {
+    width: 100%;
+  }
+
+  &[data-view="true"] {
+    img {
+      transform: scale(1.1);
+      animation: zoomInHero 1.2s ease-out 0.4s forwards;
+      transform-origin: top right;
+    }
+  }
+}
+
+.content {
+  height: 100%;
+  width: 100%;
+  max-width: 530px;
+  position: relative;
+
+  &--inner {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #fff;
+  }
+
+  p:first-child {
+    font-size: 14px;
+    line-height: 114.29%;
+  }
+
+  h2 {
+    font-size: 48px;
+    line-height: 100%;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    font-size: 14px;
+    order: -1;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 18px;
+    line-height: 133.33%;
+    margin: 0;
+  }
+
+  .disclaimer {
+    position: absolute;
+    bottom: 0;
+    color: #7d7d7d;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-size: 14px;
+    line-height: 114.29%;
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: ($max-md + px)) {
+  .container {
+    margin-bottom: 100px;
+
+    &--inner {
+      flex-direction: column;
+      gap: 60px;
+      padding: 2rem;
+      max-width: 810px;
+      align-items: flex-start;
+    }
+
+    .disclaimer-mobile {
+      width: 100%;
+      display: flex;
+      color: #7d7d7d;
+      text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      font-size: 14px;
+      line-height: 114.29%;
+      margin: 0;
+    }
+  }
+
+  .content {
+    height: auto;
+    &--inner {
+      height: auto;
+    }
+  }
+
+  .disclaimer {
+    display: none;
+  }
+
+  .img {
+    img {
+      border-radius: 80px;
+    }
+  }
+}
+
+@media screen and (max-width: ($max-xs + px)) {
+
+  .container--inner {
+    gap: 40px;
+    padding: 1rem;
+  }
+
+  .content {
+    h2 {
+      margin-bottom: 16px;
+      font-size: 36px;
+    }
+  }
+}
+
+@keyframes zoomInHero {
+  0% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

@@ -1,0 +1,139 @@
+@import "../../styles/LG/variables.scss";
+
+.container {
+  width: 100%;
+  position: relative;
+  margin: 200px auto;
+}
+
+.bg {
+  width: 100%;
+
+  img {
+    width: auto;
+    height: 100%;
+    // opacity: 0;
+  }
+}
+
+.inner {
+  // position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0 36px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: space-around;
+
+  justify-content: space-between;
+  padding: 0;
+
+  .graphic {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    video {
+      width: 100%;
+      // max-width: 400px;
+    }
+  }
+}
+
+.content {
+  width: 100%;
+  padding-right: 32px;
+
+  &-inner {
+    max-width: 600px;
+    width: 100%;
+  }
+}
+
+.header {
+  color: #fff;
+  margin-bottom: 40px;
+
+  &-mobile {
+    display: none;
+    max-width: 650px;
+  }
+
+  h3 {
+    font-size: 48px;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: ($max-md + px)) {
+  .container {
+    margin: 0px auto;
+  }
+
+  .bg {
+    position: absolute;
+    overflow: hidden;
+    bottom: -180px;
+  }
+
+  .inner {
+    flex-direction: column;
+    position: relative;
+    padding: 120px 32px 160px;
+
+    .graphic {
+      display: flex;
+      justify-content: center;
+      padding: 0 30px;
+
+      video {
+        max-width: 700px;
+      }
+    }
+  }
+
+  .header {
+    display: none;
+
+    &-mobile {
+      display: block;
+      max-width: 540px;
+      width: 100%;
+    }
+  }
+
+  .content {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin-top: 50px;
+  }
+}
+
+@media screen and (max-width: ($max-sm + px)) {
+  .header {
+    h3 {
+      font-size: 36px;
+    }
+  }
+
+  .inner {
+    gap: 0;
+  }
+}
+
+@media screen and (max-width: ($max-xs + px)) {
+  .inner {
+    top: -60px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}

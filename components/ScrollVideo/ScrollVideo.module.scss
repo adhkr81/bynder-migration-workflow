@@ -1,0 +1,131 @@
+@import "../../styles/LG/variables.scss";
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 8000px;
+}
+
+.wrapper {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100dvh;
+}
+
+.video-wrapper {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  video {
+    max-height: calc(100dvh - 100px);
+    min-height: 600px;
+    min-width: 1600px;
+    position: relative;
+    top: 40px;
+  }
+}
+
+@media screen and (max-width: 1370px) {
+  .video-wrapper {
+    video {
+      min-width: 100%;
+      transform: scale(1.15);
+    }
+  }
+}
+
+@media screen and (max-width: #{$max-md}px) {
+  .container {
+    height: 100%;
+  }
+
+  .wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    .headings {
+      width: 100%;
+      width: 90%;
+      margin: 85px auto 0px;
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
+
+      h2 {
+        color: #fff;
+        font-size: 48px;
+        max-width: 520px;
+        line-height: 1;
+      }
+
+      p {
+        font-size: 24px;
+        color: #fd312e;
+      }
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 120px;
+
+      img {
+        width: 100%;
+      }
+
+      .border-wrapper {
+        border-radius: 40px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 60px;
+        gap: 43px;
+        background-color: #111111;
+
+        h3 {
+          font-size: 28px;
+          color: #fd312e;
+          letter-spacing: 0.144px;
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: #{$max-xs}px) {
+  .wrapper {
+    .headings {
+      gap: 48px;
+      h2 {
+        font-size: 36px;
+      }
+
+      .content {
+        .border-wrapper {
+          padding: 48px;
+          gap: 22px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 799px) {
+  .video-wrapper {
+    video {
+      min-width: auto;
+      max-width: 450px;
+      width: 100%;
+      transform: scale(0.9);
+      max-height: 100dvh;
+    }
+  }
+}
